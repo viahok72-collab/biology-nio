@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Эволюция живого мира на Земле</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 10px; gap: 10px;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; color: #58d68d;
+    font-weight: 700; font-size: 1.1rem; white-space: nowrap;
+  }
+  .logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+  .logo-text { color: #e6edf3; }
+  .logo-text span { color: #58d68d; }
+
+  .dropdown { position: relative; }
+
+  .dropdown-btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .dropdown-btn:hover {
+    background: #30363d;
+    border-color: #58d68d;
+  }
+  .dropdown-btn .arrow {
+    transition: transform 0.25s;
+    font-size: 0.7rem;
+  }
+  .dropdown.open .dropdown-btn .arrow {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    min-width: 240px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 200;
+  }
+  .dropdown.open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 9px 14px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 0.88rem;
+    border-bottom: 1px solid #21262d;
+    transition: background 0.15s, color 0.15s, padding-left 0.15s;
+  }
+  .dropdown-menu a:last-child { border-bottom: none; }
+  .dropdown-menu a:hover {
+    background: #21262d;
+    color: #58d68d;
+    padding-left: 20px;
+  }
+
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 10px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #161b22 0%, #1c2430 100%);
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(1.4rem, 4vw, 2.3rem);
+    color: #e6edf3;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: #58d68d; }
+  .hero p {
+    color: #8b949e;
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+  }
+
+  .info-block {
+    background: linear-gradient(135deg, #161b22 0%, #1a2230 100%);
+    border: 1px solid #30363d;
+    border-left: 3px solid #58d68d;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+  .info-block h3 {
+    color: #e6edf3;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .info-block p {
+    color: #8b949e;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  .info-block strong { color: #e6edf3; }
+  .info-block .accent { color: #58d68d; font-weight: 600; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #58d68d;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 1px solid rgba(88, 214, 141, 0.4);
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    margin-top: 10px;
+  }
+  .back-link:hover {
+    background: rgba(88, 214, 141, 0.12);
+    border-color: #58d68d;
+    transform: translateX(-3px);
+  }
+
+  .crossword-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .crossword-wrap {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+    overflow-x: auto;
+  }
+  .crossword-wrap h2 {
+    font-size: 1rem;
+    color: #e6edf3;
+    margin-bottom: 12px;
+    padding-left: 10px;
+    border-left: 3px solid #58d68d;
+  }
+
+  .crossword {
+    display: grid;
+    grid-template-columns: repeat(16, 36px);
+    grid-template-rows: repeat(16, 36px);
+    gap: 2px;
+    margin: 0 auto;
+    width: max-content;
+  }
+
+  .cell {
+    width: 36px;
+    height: 36px;
+    background: #ffffff;
+    border: 1px solid #30363d;
+    border-radius: 3px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .cell.empty {
+    background: transparent;
+    border: none;
+  }
+
+  .cell input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #24292f;
+    text-transform: uppercase;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .cell input:focus {
+    background: rgba(88, 214, 141, 0.15);
+  }
+
+  .cell .num {
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: #57606a;
+    pointer-events: none;
+    z-index: 2;
+    line-height: 1;
+  }
+
+  .cell.active {
+    background: #d7f5e1;
+    box-shadow: 0 0 0 2px #58d68d;
+  }
+
+  .cell.word-active {
+    background: #eaf7ee;
+  }
+
+  .cell.correct {
+    background: #d4f4dd;
+    border-color: #2ea043;
+  }
+
+  .cell.wrong {
+    background: #fde8e8;
+    border-color: #da3633;
+  }
+
+  .cell.correct input { color: #14532d; }
+  .cell.wrong input { color: #7f1d1d; }
+
+  .panel {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+    position: sticky;
+    top: 70px;
+  }
+  .panel h2 {
+    font-size: 1rem;
+    color: #e6edf3;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #58d68d;
+  }
+
+  .question-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: #c9d1d9;
+    line-height: 1.45;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  .question-card.active {
+    border-color: #58d68d;
+    background: rgba(88, 214, 141, 0.07);
+  }
+  .question-card .q-num {
+    display: inline-block;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #58d68d;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .question-card.active .q-num {
+    background: #58d68d;
+    color: #0d1117;
+    border-color: #58d68d;
+  }
+  .question-card .direction {
+    color: #8b949e;
+    font-size: 0.75rem;
+    margin-left: 4px;
+  }
+  .question-card .letters {
+    color: #6e7681;
+    font-size: 0.75rem;
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-size: 0.85rem;
+    color: #8b949e;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #21262d;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3fb950, #58d68d);
+    transition: width 0.3s;
+  }
+
+  .check-btn {
+    width: 100%;
+    background: #238636;
+    border: 1px solid #2ea043;
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    margin-bottom: 8px;
+  }
+  .check-btn:hover {
+    background: #2ea043;
+    border-color: #3fb950;
+    transform: translateY(-1px);
+  }
+
+  .reset-btn {
+    width: 100%;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: background 0.2s, border-color 0.2s;
+    margin-bottom: 8px;
+  }
+  .reset-btn:hover {
+    background: #30363d;
+    border-color: #58d68d;
+    color: #58d68d;
+  }
+
+  .hint-btn {
+    width: 100%;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #d29922;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .hint-btn:hover {
+    background: #30363d;
+    border-color: #d29922;
+  }
+
+  .result {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin: 10px 0;
+  }
+  .result strong { color: #e6edf3; }
+  .result .good { color: #58d68d; }
+  .result .bad { color: #da3633; }
+
+  @media (max-width: 1100px) {
+    .crossword-layout { grid-template-columns: 1fr; }
+    .panel { position: static; }
+  }
+  @media (max-width: 700px) {
+    .crossword {
+      grid-template-columns: repeat(16, 26px);
+      grid-template-rows: repeat(16, 26px);
+    }
+    .cell { width: 26px; height: 26px; }
+    .cell input { font-size: 0.75rem; }
+    .cell .num { font-size: 0.5rem; }
+  }
+  @media (max-width: 600px) {
+    .header-inner { padding: 5px 8px; }
+    .logo { font-size: 0.95rem; gap: 6px; }
+    .logo svg { width: 26px; height: 26px; }
+    .dropdown-btn { padding: 6px 10px; font-size: 0.82rem; }
+    .dropdown-btn .btn-label { display: none; }
+    .dropdown-menu { min-width: 210px; right: 0; }
+    main { padding: 10px 8px; }
+    .hero { padding: 20px 14px; }
+    .crossword {
+      grid-template-columns: repeat(16, 22px);
+      grid-template-rows: repeat(16, 22px);
+    }
+    .cell { width: 22px; height: 22px; }
+    .cell input { font-size: 0.65rem; }
+  }
+
+  footer {
+    text-align: center;
+    padding: 12px 10px;
+    color: #6e7681;
+    font-size: 0.8rem;
+    border-top: 1px solid #21262d;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 3c0 4 8 4 8 8s-8 4-8 8" stroke="#58d68d" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M16 3c0 4-8 4-8 8s8 4 8 8" stroke="#3fb950" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="8.5" y1="7" x2="15.5" y2="7" stroke="#58d68d" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="7.5" y1="11" x2="16.5" y2="11" stroke="#3fb950" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="8.5" y1="15" x2="15.5" y2="15" stroke="#58d68d" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="9.5" y1="19" x2="14.5" y2="19" stroke="#3fb950" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Био<span>логия</span></span>
+    </a>
+
+    <nav class="dropdown" id="dropdown">
+      <button class="dropdown-btn" id="dropdownBtn" aria-expanded="false" aria-haspopup="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="4" y1="7" x2="20" y2="7" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="12" x2="20" y2="12" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="17" x2="20" y2="17" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="btn-label">Разделы</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <a href="index.html" role="menuitem">Введение</a>
+        <a href="1.html" role="menuitem">Химические компоненты живых организмов</a>
+        <a href="2.html" role="menuitem">Клетка – структурная и функциональная единица</a>
+        <a href="3.html" role="menuitem">Обмен веществ и преобразование энергии</a>
+        <a href="4.html" role="menuitem">Неклеточные формы жизни – вирусы</a>
+        <a href="5.html" role="menuitem">Регуляция и иммунная система</a>
+        <a href="6.html" role="menuitem">Наследственность и изменчивость</a>
+        <a href="7.html" role="menuitem">Селекция и биотехнология</a>
+        <a href="8.html" role="menuitem">Эволюция органического мира</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Интерактивный кроссворд <span>«Эволюция живого мира на Земле»</span></h1>
+    <p>Разгадай кроссворд, вписывая ответы в клетки. Выбери вопрос из списка справа - соответствующие клетки подсветятся.</p>
+  </section>
+
+  <div class="info-block">
+    <h3>Как работать с кроссвордом</h3>
+    <p>1. Кликни на вопрос в списке справа - на сетке подсветится нужное слово.</p>
+    <p>2. Введи ответ в клетки (по одной букве на клетку). Можно переходить между клетками стрелками или мышью.</p>
+    <p>3. Когда всё заполнено - нажми <strong class="accent">«✓ Проверить»</strong>. Правильные слова подсветятся зелёным, ошибки - красным.</p>
+    <p>
+      <a href="index.html" class="back-link">← Вернуться на главную страницу</a>
+    </p>
+  </div>
+
+  <div class="crossword-layout">
+
+    <div class="crossword-wrap">
+      <h2>Сетка кроссворда</h2>
+      <div class="crossword" id="crossword"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Вопросы</h2>
+
+      <div class="question-card" data-word="8">
+        <span class="q-num">8</span> Крупное преобразование, появившееся в ходе эволюции органического мира.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 9 букв</span>
+      </div>
+      <div class="question-card" data-word="1">
+        <span class="q-num">1</span> Крупный ароморфоз в органическом мире.
+        <span class="direction">(по вертикали)</span>
+        <span class="letters">- 16 букв</span>
+      </div>
+      <div class="question-card" data-word="2">
+        <span class="q-num">2</span> Организмы, живущие за счёт энергии, высвобождающейся при химических реакциях окисления неорганических соединений.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 9 букв</span>
+      </div>
+      <div class="question-card" data-word="3">
+        <span class="q-num">3</span> Организмы, создающие органические соединения за счёт энергии Солнца.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 9 букв</span>
+      </div>
+      <div class="question-card" data-word="4">
+        <span class="q-num">4</span> Необратимый процесс исторического развития живого мира на Земле.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 8 букв</span>
+      </div>
+      <div class="question-card" data-word="5">
+        <span class="q-num">5</span> Первые примитивные организмы, появившиеся в водной среде.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 10 букв</span>
+      </div>
+      <div class="question-card" data-word="7">
+        <span class="q-num">7</span> Организмы, самостоятельно образующие органические вещества из неорганических соединений.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 9 букв</span>
+      </div>
+      <div class="question-card" data-word="6">
+        <span class="q-num">6</span> Первые растения, вышедшие на сушу.
+        <span class="direction">(по горизонтали)</span>
+        <span class="letters">- 9 букв</span>
+      </div>
+
+      <div class="progress">
+        <span>Заполнено:</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <span id="progressText">0 / 0</span>
+      </div>
+
+      <button class="check-btn" id="checkBtn">✓ Проверить</button>
+      <button class="reset-btn" id="resetBtn">🔄 Пройти заново</button>
+      <button class="hint-btn" id="hintBtn">💡 Подсказка (открыть первую букву)</button>
+
+      <div class="result" id="result">
+        Впиши ответы и нажми «Проверить»
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>© 2026 Биология - образовательный проект. Выпуск 2026/2027 - 11Б.</footer>
+
+<script>
+  /* ===== МЕНЮ ===== */
+  const dropdown = document.getElementById('dropdown');
+  const btn = document.getElementById('dropdownBtn');
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = dropdown.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  });
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+  document.querySelectorAll('.dropdown-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const wordsData = [
+    { num: 8, dir: 'H', row: 0,  col: 5,  answer: 'АРОМОРФОЗ' },
+    { num: 1, dir: 'V', row: 0,  col: 8,  answer: 'МНОГОКЛЕТОЧНОСТЬ' },
+    { num: 2, dir: 'H', row: 2,  col: 5,  answer: 'ХЕМОТРОФЫ' },
+    { num: 3, dir: 'H', row: 4,  col: 7,  answer: 'ФОТОТРОФЫ' },
+    { num: 4, dir: 'H', row: 6,  col: 5,  answer: 'ЭВОЛЮЦИЯ' },
+    { num: 5, dir: 'H', row: 8,  col: 0,  answer: 'ПРОКАРИОТЫ' },
+    { num: 7, dir: 'H', row: 12, col: 2,  answer: 'АВТОТРОФЫ' },
+    { num: 6, dir: 'H', row: 14, col: 1,  answer: 'РАНИОФИТЫ' }
+  ];
+
+  const COLS = 16;
+  const ROWS = 16;
+
+  const crossword = document.getElementById('crossword');
+  const cellMap = {};
+  const wordCells = {};
+  const cellSet = new Set();
+  const cellNumbers = {};
+
+  wordsData.forEach(w => {
+    const cells = [];
+    const len = w.answer.length;
+    for (let i = 0; i < len; i++) {
+      const r = w.dir === 'V' ? w.row + i : w.row;
+      const c = w.dir === 'H' ? w.col + i : w.col;
+      const key = `${r}-${c}`;
+      cellSet.add(key);
+      if (i === 0 && cellNumbers[key] === undefined) cellNumbers[key] = w.num;
+      cells.push({ row: r, col: c });
+    }
+    wordCells[w.num] = cells;
+  });
+
+  // Создание клеток
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const key = `${r}-${c}`;
+      const cell = document.createElement('div');
+      if (!cellSet.has(key)) {
+        cell.classList.add('empty');
+        crossword.appendChild(cell);
+        continue;
+      }
+
+      cell.classList.add('cell');
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+
+      if (cellNumbers[key] !== undefined) {
+        const numEl = document.createElement('span');
+        numEl.classList.add('num');
+        numEl.textContent = cellNumbers[key];
+        cell.appendChild(numEl);
+      }
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.maxLength = 1;
+      input.dataset.row = r;
+      input.dataset.col = c;
+
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^а-яёА-ЯЁ]/g, '').toUpperCase();
+        if (input.value) {
+          cell.classList.remove('correct', 'wrong');
+          const active = getActiveWord();
+          if (active) {
+            const idx = active.cells.findIndex(p => p.row === r && p.col === c);
+            if (idx !== -1 && idx < active.cells.length - 1) {
+              const next = active.cells[idx + 1];
+              focusCell(next.row, next.col);
+            }
+          }
+          updateProgress();
+        }
+      });
+
+      input.addEventListener('keydown', (e) => handleArrow(e, r, c));
+      input.addEventListener('focus', () => highlightWordForCell(r, c));
+
+      cell.appendChild(input);
+      crossword.appendChild(cell);
+      cellMap[key] = { element: cell, input, words: [] };
+    }
+  }
+
+  wordsData.forEach(w => {
+    wordCells[w.num].forEach(({ row, col }) => {
+      const key = `${row}-${col}`;
+      if (cellMap[key]) cellMap[key].words.push(w.num);
+    });
+  });
+
+  let activeWordNum = null;
+
+  function getActiveWord() {
+    if (!activeWordNum) return null;
+    const w = wordsData.find(x => x.num === activeWordNum);
+    if (!w) return null;
+    return { ...w, cells: wordCells[w.num] };
+  }
+
+  function highlightWordForCell(r, c) {
+    const key = `${r}-${c}`;
+    const cell = cellMap[key];
+    if (!cell) return;
+    if (activeWordNum && cell.words.includes(activeWordNum)) {
+      paintActiveWord();
+      return;
+    }
+    if (cell.words.length) {
+      activeWordNum = cell.words[0];
+      paintActiveWord();
+    }
+  }
+
+  function paintActiveWord() {
+    document.querySelectorAll('.cell').forEach(el => {
+      el.classList.remove('word-active', 'active');
+    });
+    document.querySelectorAll('.question-card').forEach(el => {
+      el.classList.remove('active');
+    });
+    if (!activeWordNum) return;
+    const w = wordsData.find(x => x.num === activeWordNum);
+    if (!w) return;
+
+    wordCells[activeWordNum].forEach(({ row, col }) => {
+      const key = `${row}-${col}`;
+      if (cellMap[key]) cellMap[key].element.classList.add('word-active');
+    });
+
+    const focused = document.activeElement;
+    if (focused && focused.tagName === 'INPUT') {
+      const fkey = `${focused.dataset.row}-${focused.dataset.col}`;
+      if (cellMap[fkey]) cellMap[fkey].element.classList.add('active');
+    }
+
+    const card = document.querySelector(`.question-card[data-word="${activeWordNum}"]`);
+    if (card) card.classList.add('active');
+  }
+
+  function focusCell(r, c) {
+    const key = `${r}-${c}`;
+    const cell = cellMap[key];
+    if (!cell) return;
+    cell.input.focus();
+    cell.input.select();
+  }
+
+  function handleArrow(e, r, c) {
+    const w = getActiveWord();
+    if (!w) return;
+    let dr = 0, dc = 0;
+    if (e.key === 'ArrowUp')    dr = -1;
+    if (e.key === 'ArrowDown')  dr = 1;
+    if (e.key === 'ArrowLeft')  dc = -1;
+    if (e.key === 'ArrowRight') dc = 1;
+    if (!dr && !dc) return;
+    if (w.dir === 'H' && dr !== 0) return;
+    if (w.dir === 'V' && dc !== 0) return;
+    e.preventDefault();
+    const nr = r + dr, nc = c + dc;
+    if (cellMap[`${nr}-${nc}`]) focusCell(nr, nc);
+  }
+
+  document.querySelectorAll('.question-card').forEach(card => {
+    card.addEventListener('click', () => {
+      activeWordNum = Number(card.dataset.word);
+      paintActiveWord();
+      const first = wordCells[activeWordNum][0];
+      focusCell(first.row, first.col);
+    });
+  });
+
+  function updateProgress() {
+    let filled = 0;
+    const totalCells = Object.keys(cellMap).length;
+    Object.values(cellMap).forEach(({ input }) => {
+      if (input.value.trim()) filled++;
+    });
+    const pct = totalCells ? (filled / totalCells) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${filled} / ${totalCells}`;
+  }
+  updateProgress();
+
+  document.getElementById('checkBtn').addEventListener('click', () => {
+    let correctWords = 0;
+    const totalWords = wordsData.length;
+
+    wordsData.forEach(w => {
+      const cells = wordCells[w.num];
+      let wordCorrect = true;
+      cells.forEach(({ row, col }, i) => {
+        const key = `${row}-${col}`;
+        const cell = cellMap[key];
+        if (!cell) return;
+        const expected = w.answer[i];
+        const actual = cell.input.value.trim().toUpperCase();
+        cell.element.classList.remove('correct', 'wrong');
+        if (actual === expected) {
+          cell.element.classList.add('correct');
+        } else {
+          cell.element.classList.add('wrong');
+          wordCorrect = false;
+        }
+      });
+      if (wordCorrect) correctWords++;
+    });
+
+    const result = document.getElementById('result');
+    if (correctWords === totalWords) {
+      result.innerHTML = `🎉 Отлично! Все <strong>${totalWords}</strong> слов разгаданы верно!`;
+    } else if (correctWords >= totalWords * 0.5) {
+      result.innerHTML = `Хорошо! Верных слов: <strong class="good">${correctWords}</strong> из <strong>${totalWords}</strong>.`;
+    } else {
+      result.innerHTML = `Верных слов: <strong class="good">${correctWords}</strong>, ошибок: <strong class="bad">${totalWords - correctWords}</strong>. Попробуй ещё раз!`;
+    }
+  });
+
+  document.getElementById('hintBtn').addEventListener('click', () => {
+    if (!activeWordNum) {
+      alert('Сначала выбери вопрос из списка.');
+      return;
+    }
+    const w = wordsData.find(x => x.num === activeWordNum);
+    const first = wordCells[w.num][0];
+    const cell = cellMap[`${first.row}-${first.col}`];
+    if (cell) {
+      cell.input.value = w.answer[0];
+      cell.element.classList.remove('correct', 'wrong');
+    }
+    updateProgress();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    Object.values(cellMap).forEach(({ input, element }) => {
+      input.value = '';
+      element.classList.remove('correct', 'wrong', 'active', 'word-active');
+    });
+    document.querySelectorAll('.question-card').forEach(el => el.classList.remove('active'));
+    activeWordNum = null;
+    document.getElementById('result').innerHTML = 'Впиши ответы и нажми «Проверить»';
+    updateProgress();
+  });
+
+</script>
+
+</body>
+</html>

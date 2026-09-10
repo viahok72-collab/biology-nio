@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Строение бактериальной клетки</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 10px; gap: 10px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; color: #58d68d;
+    font-weight: 700; font-size: 1.1rem; white-space: nowrap;
+  }
+  .logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+  .logo-text { color: #e6edf3; }
+  .logo-text span { color: #58d68d; }
+
+  .dropdown { position: relative; }
+  .dropdown-btn {
+    background: #21262d; border: 1px solid #30363d; color: #c9d1d9;
+    padding: 7px 14px; border-radius: 6px; cursor: pointer;
+    font-size: 0.9rem; font-family: inherit;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .dropdown-btn:hover { background: #30363d; border-color: #58d68d; }
+  .dropdown-btn .arrow { transition: transform 0.25s; font-size: 0.7rem; }
+  .dropdown.open .dropdown-btn .arrow { transform: rotate(180deg); }
+
+  .dropdown-menu {
+    position: absolute; top: calc(100% + 4px); right: 0;
+    background: #161b22; border: 1px solid #30363d;
+    border-radius: 8px; min-width: 240px; overflow: hidden;
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6); z-index: 200;
+  }
+  .dropdown.open .dropdown-menu {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  .dropdown-menu a {
+    display: block; padding: 9px 14px; color: #c9d1d9;
+    text-decoration: none; font-size: 0.88rem;
+    border-bottom: 1px solid #21262d;
+    transition: background 0.15s, color 0.15s, padding-left 0.15s;
+  }
+  .dropdown-menu a:last-child { border-bottom: none; }
+  .dropdown-menu a:hover {
+    background: #21262d; color: #58d68d; padding-left: 20px;
+  }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 14px 10px; }
+
+  .info-block {
+    background: linear-gradient(135deg, #161b22 0%, #1a2230 100%);
+    border: 1px solid #30363d;
+    border-left: 3px solid #58d68d;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+  .info-block h3 {
+    color: #e6edf3;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .info-block p {
+    color: #8b949e;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  .info-block strong { color: #e6edf3; }
+  .info-block .accent { color: #58d68d; font-weight: 600; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #58d68d;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 1px solid rgba(88, 214, 141, 0.4);
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    margin-top: 10px;
+  }
+  .back-link:hover {
+    background: rgba(88, 214, 141, 0.12);
+    border-color: #58d68d;
+    transform: translateX(-3px);
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #161b22 0%, #1c2430 100%);
+    border: 1px solid #30363d; border-radius: 10px;
+    padding: 24px 20px; text-align: center; margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    color: #e6edf3; margin-bottom: 8px;
+  }
+  .hero h1 span { color: #58d68d; }
+  .hero p {
+    color: #8b949e; max-width: 760px;
+    margin: 0 auto; font-size: 0.95rem;
+  }
+
+  .test-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .image-wrap {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .image-wrap h2 {
+    font-size: 1rem;
+    color: #e6edf3;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #58d68d;
+  }
+  .image-container {
+    position: relative;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .marker {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #161b22;
+    border: 2px solid #58d68d;
+    color: #e6edf3;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 2;
+  }
+  .marker:hover {
+    transform: translate(-50%, -50%) scale(1.12);
+    background: #58d68d;
+    color: #0d1117;
+  }
+  .marker.active {
+    background: #58d68d;
+    color: #0d1117;
+    box-shadow: 0 0 0 8px rgba(88,214,141,0.3);
+    animation: pulse 1.4s infinite;
+  }
+  .marker.correct {
+    background: #2ea043;
+    border-color: #2ea043;
+    color: #fff;
+    animation: none;
+  }
+  .marker.wrong {
+    background: #da3633;
+    border-color: #da3633;
+    color: #fff;
+    animation: none;
+  }
+  .marker.done { cursor: pointer; }
+  .marker.done:hover { transform: translate(-50%, -50%); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(88,214,141,0.35); }
+    50%      { box-shadow: 0 0 0 12px rgba(88,214,141,0.1); }
+  }
+
+  .answers {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+    position: sticky;
+    top: 70px;
+  }
+  .answers h2 {
+    font-size: 1rem;
+    color: #e6edf3;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 3px solid #58d68d;
+  }
+
+  .active-hint {    
+    background: rgba(214, 88, 119, 0.08);
+    border: 1px dashed rgba(214, 88, 119, 0.4);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: #d65873;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .active-hint.empty {
+    background: transparent;
+    border-color: #30363d;
+    color: #6e7681;
+    border-style: solid;
+  }
+  .active-hint strong { color: #e6edf3; }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #8b949e;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #21262d;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3fb950, #58d68d);
+    transition: width 0.3s;
+  }
+
+  .answers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .answer-item {
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #c9d1d9;
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  }
+  .answer-item:hover:not(:disabled) {
+    background: #30363d;
+    border-color: #58d68d;
+    transform: translateX(3px);
+  }
+  .answer-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #58d68d;
+    flex-shrink: 0;
+  }
+  .answer-item:disabled { cursor: not-allowed; }
+
+  .answer-item.selected {
+    background: rgba(88,214,141,0.15);
+    border-color: #58d68d;
+    color: #7ee787;
+    transform: translateX(3px);
+  }
+  .answer-item.selected .dot {
+    background: #58d68d;
+    box-shadow: 0 0 0 3px rgba(88,214,141,0.25);
+  }
+
+  .answer-item.correct-final {
+    background: rgba(46,160,67,0.2);
+    border-color: #2ea043;
+    color: #7ee787;
+  }
+  .answer-item.wrong-final {
+    background: rgba(218,54,51,0.2);
+    border-color: #da3633;
+    color: #ff7b72;
+  }
+  .answer-item.right-show {
+    background: rgba(46,160,67,0.12);
+    border-color: #2ea043;
+    color: #7ee787;
+    border-style: dashed;
+  }
+
+  .check-btn {
+    width: 100%;
+    background: #238636;
+    border: 1px solid #2ea043;
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    margin-bottom: 8px;
+  }
+  .check-btn:hover:not(:disabled) {
+    background: #2ea043;
+    border-color: #3fb950;
+    transform: translateY(-1px);
+  }
+  .check-btn:disabled {
+    background: #21262d;
+    border-color: #30363d;
+    color: #6e7681;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .result {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin-bottom: 10px;
+  }
+  .result strong { color: #e6edf3; }
+  .result .good { color: #58d68d; }
+  .result .bad { color: #da3633; }
+
+  .reset-btn {
+    width: 100%;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .reset-btn:hover {
+    background: #30363d;
+    border-color: #58d68d;
+    color: #58d68d;
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  footer {
+    text-align: center; padding: 12px 10px;
+    color: #6e7681; font-size: 0.8rem;
+    border-top: 1px solid #21262d;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 900px) {
+    .test-layout { grid-template-columns: 1fr; }
+    .answers { position: static; }
+  }
+  @media (max-width: 600px) {
+    .header-inner { padding: 5px 8px; }
+    .logo { font-size: 0.95rem; gap: 6px; }
+    .logo svg { width: 26px; height: 26px; }
+    .dropdown-btn { padding: 6px 10px; font-size: 0.82rem; }
+    .dropdown-btn .btn-label { display: none; }
+    .dropdown-menu { min-width: 210px; right: 0; }
+    main { padding: 10px 8px; }
+    .hero { padding: 20px 14px; }
+    .marker { width: 28px; height: 28px; font-size: 0.8rem; }
+    .answer-item { font-size: 0.85rem; padding: 7px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 3c0 4 8 4 8 8s-8 4-8 8" stroke="#58d68d" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M16 3c0 4-8 4-8 8s8 4 8 8" stroke="#3fb950" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="8.5" y1="7" x2="15.5" y2="7" stroke="#58d68d" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="7.5" y1="11" x2="16.5" y2="11" stroke="#3fb950" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="8.5" y1="15" x2="15.5" y2="15" stroke="#58d68d" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="9.5" y1="19" x2="14.5" y2="19" stroke="#3fb950" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Био<span>логия</span></span>
+    </a>
+
+    <nav class="dropdown" id="dropdown">
+      <button class="dropdown-btn" id="dropdownBtn" aria-expanded="false" aria-haspopup="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="4" y1="7" x2="20" y2="7" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="12" x2="20" y2="12" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="17" x2="20" y2="17" stroke="#c9d1d9" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="btn-label">Разделы</span>
+        <span class="arrow">▼</span>
+      </button>
+
+      <div class="dropdown-menu" role="menu">
+        <a href="index.html" role="menuitem">Введение</a>
+        <a href="1.html" role="menuitem">Химические компоненты живых организмов</a>
+        <a href="2.html" role="menuitem">Клетка – структурная и функциональная единица</a>
+        <a href="3.html" role="menuitem">Обмен веществ и преобразование энергии</a>
+        <a href="4.html" role="menuitem">Неклеточные формы жизни – вирусы</a>
+        <a href="5.html" role="menuitem">Регуляция и иммунная система</a>
+        <a href="6.html" role="menuitem">Наследственность и изменчивость</a>
+        <a href="7.html" role="menuitem">Селекция и биотехнология</a>
+        <a href="8.html" role="menuitem">Эволюция органического мира</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Интерактивный тест: <span>строение бактериальной клетки</span></h1>
+    <p>Нажми на номер на картинке, затем выбери вариант ответа справа. Можно менять ответы до нажатия кнопки «Проверить».</p>
+  </section>
+
+  <!-- ВВЕДЕНИЕ -->
+  <div class="info-block" id="введение">
+    <h3>Введение</h3>
+    <p>Бактерии — одни из самых древних и распространённых организмов на Земле. Они относятся к <span class="accent">прокариотам</span> — организмам, клетки которых не имеют оформленного ядра. Несмотря на простое строение, бактериальная клетка содержит все необходимые структуры для жизни: наследственный материал, рибосомы, цитоплазму и плазматическую мембрану.</p>
+    <p>В этом тесте предлагается <strong>9 элементов</strong> бактериальной клетки. Твоя задача — правильно определить, что обозначено каждой цифрой на рисунке. Выбирай ответ из списка справа, при необходимости меняй выбор, а затем нажми кнопку <strong>«Проверить»</strong>, чтобы увидеть результат. <span class="accent">Бледно-зелёным</span> подсвечены <strong>неверные</strong> ответы.</p>
+    <p>
+      <a href="index.html" class="back-link">← Вернуться на главную страницу</a>
+    </p>
+  </div>
+
+  <div class="test-layout">
+
+    <div class="image-wrap">
+      <h2>Строение бактериальной клетки</h2>
+      <div class="image-container" id="imageContainer">
+        <img src="https://boxapps.adu.by/public/uploads/game-elements/1865/kletka.png"
+             alt="Строение бактериальной клетки"
+             id="bacteriaImg">
+<div class="marker" data-num="1" style="left: 14%; top: 46%;">1</div>
+<div class="marker" data-num="2" style="left: 27%; top: 39%;">2</div>
+<div class="marker" data-num="3" style="left: 32%; top: 32%;">3</div>
+<div class="marker" data-num="4" style="left: 45%; top: 18%;">4</div>
+<div class="marker" data-num="5" style="left: 76%; top: 66%;">5</div>
+<div class="marker" data-num="6" style="left: 70%; top: 77%;">6</div>
+<div class="marker" data-num="7" style="left: 62%; top: 88%;">7</div>
+<div class="marker" data-num="8" style="left: 50%; top: 88%;">8</div>
+<div class="marker" data-num="9" style="left: 37%; top: 88%;">9</div>
+      </div>
+      <p class="hint">Номера соответствуют указателям на картинке</p>
+    </div>
+
+    <div class="answers">
+      <h2>Варианты ответов</h2>
+
+      <div class="active-hint empty" id="activeHint">
+        Выбери номер на картинке слева
+      </div>
+
+      <div class="progress">
+        <span>Отвечено:</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <span id="progressText">0 / 9</span>
+      </div>
+
+      <div class="answers-list" id="answersList">
+        <button class="answer-item" data-id="flagellum"><span class="dot"></span> Жгутик</button>
+        <button class="answer-item" data-id="hyaloplasm"><span class="dot"></span> Гиалоплазма</button>
+        <button class="answer-item" data-id="ribosomes"><span class="dot"></span> Рибосомы</button>
+        <button class="answer-item" data-id="chromosomes"><span class="dot"></span> Хромосомы</button>
+        <button class="answer-item" data-id="capsule"><span class="dot"></span> Слизистая капсула</button>
+        <button class="answer-item" data-id="wall"><span class="dot"></span> Клеточная стенка</button>
+        <button class="answer-item" data-id="membrane"><span class="dot"></span> Цитоплазматическая мембрана</button>
+        <button class="answer-item" data-id="cytoplasm"><span class="dot"></span> Цитоплазма</button>
+        <button class="answer-item" data-id="plasmid"><span class="dot"></span> Плазмида</button>
+      </div>
+
+      <button class="check-btn" id="checkBtn" disabled>✓ Проверить</button>
+      <div class="result" id="result">
+        Всего элементов: <strong>9</strong>. Начни с любого номера на картинке.
+      </div>
+
+      <button class="reset-btn" id="resetBtn">🔄 Пройти заново</button>
+    </div>
+
+  </div>
+</main>
+
+<footer>© 2026 Биология - образовательный проект. Выпуск 2026/2027 - 11Б.</footer>
+
+<script>
+
+  const dropdown = document.getElementById('dropdown');
+  const btn = document.getElementById('dropdownBtn');
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = dropdown.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  });
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+  document.querySelectorAll('.dropdown-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const correctAnswers = {
+    1: 'flagellum',
+    2: 'hyaloplasm',
+    3: 'ribosomes',
+    4: 'chromosomes',
+    5: 'capsule',
+    6: 'wall',
+    7: 'membrane',
+    8: 'cytoplasm',
+    9: 'plasmid'
+  };
+
+  const idToName = {
+    flagellum: 'Жгутик',
+    hyaloplasm: 'Гиалоплазма',
+    ribosomes: 'Рибосомы',
+    chromosomes: 'Хромосомы',
+    capsule: 'Слизистая капсула',
+    wall: 'Клеточная стенка',
+    membrane: 'Цитоплазматическая мембрана',
+    cytoplasm: 'Цитоплазма',
+    plasmid: 'Плазмида'
+  };
+
+  const total = 9;
+  let activeNum = null;
+  const userAnswers = {};  
+  let checked = false;
+
+  const activeHint   = document.getElementById('activeHint');
+  const resultBox    = document.getElementById('result');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const answersList  = document.getElementById('answersList');
+  const checkBtn     = document.getElementById('checkBtn');
+  const resetBtn     = document.getElementById('resetBtn');
+
+  function shuffleAnswers() {
+    const items = Array.from(answersList.querySelectorAll('.answer-item'));
+    const shuffled = items
+      .map(v => ({ v, r: Math.random() }))
+      .sort((a, b) => a.r - b.r)
+      .map(o => o.v);
+    answersList.innerHTML = '';
+    shuffled.forEach(el => answersList.appendChild(el));
+  }
+  shuffleAnswers();
+
+  document.querySelectorAll('.marker').forEach(marker => {
+    marker.addEventListener('click', () => {
+      if (checked) return;
+
+      document.querySelectorAll('.marker').forEach(m => m.classList.remove('active'));
+      marker.classList.add('active');
+
+      activeNum = Number(marker.dataset.num);
+      activeHint.classList.remove('empty');
+
+      if (userAnswers[activeNum]) {
+        activeHint.innerHTML = `Номер <strong>${activeNum}</strong> - текущий выбор: <strong>${idToName[userAnswers[activeNum]]}</strong>. Можно поменять.`;
+      } else {
+        activeHint.innerHTML = `Номер <strong>${activeNum}</strong> - выбери вариант ответа справа`;
+      }
+
+      refreshSelectionHighlight();
+      updateCheckBtnState();
+    });
+  });
+
+  answersList.querySelectorAll('.answer-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (checked) return;
+      if (activeNum === null) {
+        activeHint.classList.remove('empty');
+        activeHint.textContent = 'Сначала выбери номер на картинке слева';
+        return;
+      }
+
+      if (userAnswers[activeNum] === item.dataset.id) {
+        delete userAnswers[activeNum];
+      } else {
+        userAnswers[activeNum] = item.dataset.id;
+      }
+
+      refreshSelectionHighlight();
+      updateProgress();
+      updateCheckBtnState();
+
+      const nextNum = findNextUnanswered(activeNum);
+      if (nextNum !== null && userAnswers[activeNum]) {
+        setTimeout(() => {
+          const nextMarker = document.querySelector(`.marker[data-num="${nextNum}"]`);
+          if (nextMarker && !checked) nextMarker.click();
+        }, 250);
+      }
+    });
+  });
+
+  function refreshSelectionHighlight() {
+    answersList.querySelectorAll('.answer-item').forEach(el => el.classList.remove('selected'));
+    if (activeNum === null) return;
+    const chosen = userAnswers[activeNum];
+    if (!chosen) return;
+    const el = answersList.querySelector(`.answer-item[data-id="${chosen}"]`);
+    if (el) el.classList.add('selected');
+  }
+
+  function findNextUnanswered(fromNum) {
+    for (let i = 1; i <= total; i++) {
+      const n = ((fromNum - 1 + i) % total) + 1;
+      if (!userAnswers[n]) return n;
+    }
+    return null;
+  }
+
+  function updateProgress() {
+    const done = Object.keys(userAnswers).length;
+    progressFill.style.width = (done / total) * 100 + '%';
+    progressText.textContent = `${done} / ${total}`;
+  }
+
+  function updateCheckBtnState() {
+    const done = Object.keys(userAnswers).length;
+    checkBtn.disabled = done < total;
+    if (done < total) {
+      checkBtn.textContent = `✓ Проверить (${done}/${total})`;
+    } else {
+      checkBtn.textContent = '✓ Проверить';
+    }
+  }
+
+  checkBtn.addEventListener('click', () => {
+    if (checked) return;
+    let score = 0;
+    let mistakes = 0;
+
+    for (let n = 1; n <= total; n++) {
+      const marker = document.querySelector(`.marker[data-num="${n}"]`);
+      const chosenId = userAnswers[n];
+      const rightId = correctAnswers[n];
+
+      marker.classList.remove('active');
+      marker.classList.add('done');
+
+      if (chosenId === rightId) {
+        score++;
+        marker.classList.add('correct');
+      } else {
+        mistakes++;
+        marker.classList.add('wrong');
+
+        const rightEl = answersList.querySelector(`.answer-item[data-id="${rightId}"]`);
+        if (rightEl) rightEl.classList.add('right-show');
+      }
+
+      if (chosenId) {
+        const chosenEl = answersList.querySelector(`.answer-item[data-id="${chosenId}"]`);
+        if (chosenEl) {
+          chosenEl.classList.remove('selected');
+          chosenEl.classList.add(chosenId === rightId ? 'correct-final' : 'wrong-final');
+        }
+      }
+    }
+
+    checked = true;
+
+    answersList.querySelectorAll('.answer-item').forEach(el => el.disabled = true);
+    checkBtn.disabled = true;
+
+    let msg = '';
+    if (mistakes === 0) {
+      msg = `🎉 Отлично! Все <strong>${total}</strong> ответов верны!`;
+    } else if (score >= total * 0.7) {
+      msg = `Хорошо! Правильно: <strong class="good">${score}</strong>, ошибок: <strong class="bad">${mistakes}</strong>.`;
+    } else {
+      msg = `Правильно: <strong class="good">${score}</strong>, ошибок: <strong class="bad">${mistakes}</strong>. Попробуй ещё раз!`;
+    }
+    resultBox.innerHTML = msg;
+
+    activeHint.classList.add('empty');
+    activeHint.innerHTML = `Проверка завершена: <strong>${score}</strong> из <strong>${total}</strong>`;
+  });
+
+  resetBtn.addEventListener('click', () => {
+    for (const k in userAnswers) delete userAnswers[k];
+    activeNum = null;
+    checked = false;
+
+    document.querySelectorAll('.marker').forEach(m => {
+      m.classList.remove('active', 'correct', 'wrong', 'done');
+    });
+
+    answersList.querySelectorAll('.answer-item').forEach(el => {
+      el.classList.remove('selected', 'correct-final', 'wrong-final', 'right-show');
+      el.disabled = false;
+    });
+
+    shuffleAnswers();
+
+    progressFill.style.width = '0%';
+    progressText.textContent = `0 / ${total}`;
+    activeHint.classList.add('empty');
+    activeHint.textContent = 'Выбери номер на картинке слева';
+    resultBox.innerHTML = `Всего элементов: <strong>${total}</strong>. Начни с любого номера на картинке.`;
+    checkBtn.disabled = true;
+    checkBtn.textContent = `✓ Проверить (0/${total})`;
+  });
+
+  updateCheckBtnState();
+</script>
+
+</body>
+</html>
